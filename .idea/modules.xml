@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/Battle/Battle.iml" filepath="$PROJECT_DIR$/Battle/Battle.iml" />
+      <module fileurl="file://$PROJECT_DIR$/DAO/DAO.iml" filepath="$PROJECT_DIR$/DAO/DAO.iml" />
+      <module fileurl="file://$PROJECT_DIR$/Entity/Entity.iml" filepath="$PROJECT_DIR$/Entity/Entity.iml" />
+      <module fileurl="file://$PROJECT_DIR$/MyBattleServer.iml" filepath="$PROJECT_DIR$/MyBattleServer.iml" />
+      <module fileurl="file://$PROJECT_DIR$/MyClient/MyClient.iml" filepath="$PROJECT_DIR$/MyClient/MyClient.iml" />
+      <module fileurl="file://$PROJECT_DIR$/MyServer/MyServer.iml" filepath="$PROJECT_DIR$/MyServer/MyServer.iml" />
+      <module fileurl="file://$PROJECT_DIR$/Utill/Utill.iml" filepath="$PROJECT_DIR$/Utill/Utill.iml" />
+    </modules>
+  </component>
+</project>
