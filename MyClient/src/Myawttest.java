@@ -101,7 +101,7 @@ public class Myawttest
 					
 					try
 					{
-						Thread.sleep(1000);
+						Thread.sleep(500);//延迟1秒的意义？
 					} catch (InterruptedException e1)
 					{
 						// TODO Auto-generated catch block

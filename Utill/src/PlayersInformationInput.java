@@ -1,6 +1,7 @@
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.Socket;
+import java.util.Iterator;
 
 /**
  * Created by Administrator on 2016/7/8.
@@ -28,27 +29,57 @@ public class PlayersInformationInput implements Runnable
 
 
         try {
-            System.out.println("下面是从socket再次获得输入流");
-
-            if (playersocket.getKeepAlive()==false){
-                System.out.println("socket已经断开了");
-            }
-
 
             InputStream is = playersocket.getInputStream();
-            System.out.println("上面是从socket再次获得输入流");
-
-
+            String[] words;
 
             while (true){
 
                 byte[] buffer=new byte[200];
 
                 int length= is.read(buffer);
-
                 String word=new String(buffer,0,length);
 
+
                 System.out.println(word);//这里能不能正确输出到控制台
+
+                //加入退出功能 #exit#yourname#
+                words =word.split("#");
+
+                if (words.length==3)//尾巴貌似不算。。 前面空格是算的
+                {
+                    if (words[1].equals("exit"))
+                    {
+                        String exitname=words[2];//通过名字来退出的
+
+                        //现在使用list去保存的，之后应该改用map吧
+                        for (Iterator iterator =MyServer.onlinePlayersEntitylist.iterator(); iterator.hasNext();)
+                        {
+                            OnlinePlayersEntity playersEntity =  (OnlinePlayersEntity)iterator.next();
+                            if ( playersEntity.playerotherinformation.playersName.equals(exitname))
+                            {
+                                //做一些逻辑处理，比如讲玩家的游戏信息写回数据库等等
+
+                                MyServer.onlinePlayersEntitylist.remove(playersEntity);//这样删除这个节点
+
+                                if(!playersocket.isClosed()) {
+                                    playersocket.close(); //这里关闭是不是对方已经关闭了？
+                                    break;//跳出for循环
+                                }
+                            }
+
+                        }
+
+                        /*
+                        //把当前的消息输入线程也要关闭
+                        Thread.currentThread().interrupt();//中断此线程
+                        //这句指令后竟然又来了一次socket的消息。
+                        */
+                        return;
+
+                    }//if退出指令
+                }//这是指令
+
 
             }
 

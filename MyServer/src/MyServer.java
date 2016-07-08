@@ -19,13 +19,13 @@ public class MyServer {
 
     public static void main(String[] args)throws Exception
     {
-        int port=5001;
+        int port=5000;
 
         //创建线程池。用于玩家连入后（创建玩家在线实体和玩家通信进程）
         ThreadPoolExecutor executorinformationPool = new ThreadPoolExecutor(5,10,200,TimeUnit.MILLISECONDS,new ArrayBlockingQueue<Runnable>(5));
 
 
-        //（需要和玩家连接的socket，得到流，循环接收方可）用于接收来自客户端的信息，
+
         //向客户端发送信息则不用多线程
 
         //服务器端启动控制子线程，用于服务器维护方便
@@ -40,23 +40,25 @@ public class MyServer {
             Socket socket=ss.accept();
 
 
-            int linkresult =MyServer.linketoServer(socket);
+            //这里直接让这个函数返回一个结构new玩家实体
+            NewPlayersEntity linkresult =MyServer.linketoServer(socket);
 
 
-            if(linkresult==Status.LinkStatus.LinkisOk) {
-
+            if(linkresult.newStatus==Status.LinkStatus.LinkisOk) {
                 //生成新的玩家实体
-                OnlinePlayersEntity newplayersentity = new OnlinePlayersEntity(Status.PlayersStatus.isOnline, new PlayersEntity("tom", 1), socket);
+                OnlinePlayersEntity newplayersentity = new OnlinePlayersEntity(Status.PlayersStatus.isOnline,linkresult.playersEntity, socket);
                 onlinePlayersEntitylist.add(newplayersentity);
+
 
 
                 //有了玩家实体，创建新的玩家通信子进程
                 PlayersInformationInput playerinput = new PlayersInformationInput(newplayersentity);
+                //提交到进程池里进行执行
                 Future future = executorinformationPool.submit(playerinput);
 
 
-
                 newplayersentity.setPlayersinformationInput(future);
+
 
             }
 
@@ -69,16 +71,19 @@ public class MyServer {
 
     }
 
-    public static int linketoServer(Socket socket) throws IOException {
+    public static NewPlayersEntity linketoServer(Socket socket) throws IOException {
         //先收到一个连接，然后进行解析
         InputStream login= null;
         String words[]=null;
+
         try {
+
 
             login = socket.getInputStream();
             byte[] buffer=new byte[200];
             int length=login.read(buffer);//这里也会阻塞，等待流中的数据写入
             String word=new String(buffer,0,length);
+            System.out.println(word);
 
             words=word.split("#"); //words[2]是name
 
@@ -86,20 +91,23 @@ public class MyServer {
             e.printStackTrace();
         }finally {
 
-
         }
 
 
-        //返回给用户结果
+        //经过数据库验证判断等
         if(   canLoad(words[2])  ) //判断数据库等
         {
-            OutputStream os = socket.getOutputStream(); //这里socket已经关了。。
+            OutputStream os = socket.getOutputStream();
             os.write("#1#".getBytes());
-            os.close();
+           // os.close();  //貌似是因为这里 就把socket关闭了。。。。
         }
 
 
-        return Status.LinkStatus.LinkisOk;
+        //经过逻辑判断，返回正确的类的对象
+        NewPlayersEntity result=new NewPlayersEntity(Status.LinkStatus.LinkisOk);
+        result.setPlayersEntity(new PlayersEntity(words[2],1));
+        return  result;
+
     }
 
 
