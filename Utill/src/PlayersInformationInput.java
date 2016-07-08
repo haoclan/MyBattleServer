@@ -24,7 +24,6 @@ public class PlayersInformationInput implements Runnable
 
     @Override
     public void run() {
-
       //获得输入流，然后不断地获取信息。。。。
 
 
