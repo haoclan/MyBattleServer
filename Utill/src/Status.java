@@ -36,7 +36,7 @@ public class Status {
 
     //游戏中玩家的状态
     public static class PlayerInGameStatus{
-        public static final int ;
+       // public static final int  ;
     }
 
 }

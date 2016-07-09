@@ -6,7 +6,7 @@
 public class PlayersInformationParse //解析返回返回类型和数据格式化？
 {
 
-    public
+
 
     public static class GameInformationParse{
         //解析后进行游戏逻辑处理，然后返回信息
