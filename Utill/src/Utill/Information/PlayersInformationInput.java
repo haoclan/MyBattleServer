@@ -18,7 +18,9 @@ public class PlayersInformationInput implements Runnable
     //可能需要调用其他东西比如因此来个玩家
     public Socket playersocket;//为了方便单独把socket拿出来。
     public OnlinePlayersEntity playersEntity;//当前玩家的所有信息类
-    public Object SynObject=null; //游戏对战时候需要和游戏进程同步
+
+    public boolean haslock= false;
+    public Object lock=null; //游戏对战时候需要和游戏进程同步
 
 
     //构造方法
@@ -28,8 +30,10 @@ public class PlayersInformationInput implements Runnable
         this.playersEntity=playersEntity;
     }
 
-    public void setSynObject(Object synObject) {
-        SynObject = synObject;
+    //给它传一个锁
+    public void setlock(Object synObject) {
+        haslock=true;
+        lock = synObject;
     }
 
     @Override
@@ -43,18 +47,39 @@ public class PlayersInformationInput implements Runnable
 
             InputStream is = playersocket.getInputStream();//  返回此套接字的输入流。因此是一个吧
 
-            String[] words;
-
             while (true){
 
-                byte[] buffer=new byte[200];
+                /*
+                一直接受信息。
+                接收到信息后使用静态的方法去检测信息的大体类型
 
+                        如果信息类型是游戏类型
+                      则
+
+                    */
+                byte[] buffer=new byte[200];
+                int length= is.read(buffer);
+
+                //解析类去解析
+                PlayersInformationParse.InformationParse.parse(buffer,length);
+
+                /*
+                synchronized (lock){
+                    //修改OneBattleProcess.InGameMomentStatusEntity
+                    lock.notify();//唤醒OneBattleProcess进程,进行游戏逻辑计算
+                    //通知完,自己自动释放了锁
+                }
+                */
+
+
+
+             /*
+                byte[] buffer=new byte[200];
                 int length= is.read(buffer);
                 String word=new String(buffer,0,length);// 这里直接将字节转为String解析是不合理的,应该用protobuff
 
 
                 System.out.println(word);//这里能不能正确输出到控制台
-
                 //加入退出功能 #exit#yourname#
                 words =word.split("#");
 
@@ -82,18 +107,15 @@ public class PlayersInformationInput implements Runnable
 
                         }
 
-                        /*
-                        //把当前的消息输入线程也要关闭
-                        Thread.currentThread().interrupt();//中断此线程
-                        //这句指令后竟然又来了一次socket的消息。
-                        */
+
                         return;
 
                     }//if退出指令
                 }//这是指令
+            */
 
 
-            }
+            }//while
 
 
 

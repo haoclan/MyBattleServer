@@ -1,5 +1,7 @@
 package src.Entity;
 
+import src.Utill.Information.PlayersInformationInput;
+
 import java.net.Socket;
 import java.util.concurrent.Future;
 
@@ -12,8 +14,10 @@ public class OnlinePlayersEntity {
     public int playerstatus; //
     public PlayersEntity playerotherinformation;//更多玩家持久化信息
 
-    public Future playersinformationInput=null;//玩家信息输入子线程的查询future
-    public Socket socketToPlayer;
+    public Future playersinformationInputFuture=null;//玩家信息输入子线程的查询future
+    public PlayersInformationInput playersInformationInput;
+
+    public Socket socketToPlayer;//为了方便
 
 
     //玩家通信进程的引用，通信进程根本不听话的。它启动后就自己玩了，里面有逻辑会调用其他东西。
@@ -26,7 +30,11 @@ public class OnlinePlayersEntity {
         this.socketToPlayer=socket;
     }
 
-    public void setPlayersinformationInput(Future playersinformationInput) {
-        this.playersinformationInput = playersinformationInput;
+    public void setPlayersinformationInputFuture(Future playersinformationInput) {
+        this.playersinformationInputFuture = playersinformationInput;
+    }
+
+    public void setPlayersInformationInput(PlayersInformationInput playersInformationInput) {
+        this.playersInformationInput = playersInformationInput;
     }
 }

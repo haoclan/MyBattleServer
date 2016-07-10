@@ -22,21 +22,21 @@ import java.util.concurrent.TimeUnit;
 
 public class MyServer {
     public static ArrayList<OnlinePlayersEntity> onlinePlayersEntitylist=new ArrayList<OnlinePlayersEntity>();//维护一个在线用户列表
-
+    public static ThreadPoolExecutor executorPool;
 
     public static void main(String[] args)throws Exception
     {
         int port=5000;
 
         //创建线程池。用于玩家连入后（创建玩家在线实体和玩家通信进程）
-        ThreadPoolExecutor executorinformationPool = new ThreadPoolExecutor(10,20,200,TimeUnit.MILLISECONDS,new ArrayBlockingQueue<Runnable>(5));
+        executorPool = new ThreadPoolExecutor(10,20,200,TimeUnit.MILLISECONDS,new ArrayBlockingQueue<Runnable>(5));
 
 
         //向客户端发送信息则不用多线程
 
         //服务器端启动控制子线程，用于服务器维护方便
         ServerConsole serverConsole=new ServerConsole();
-        executorinformationPool.submit(serverConsole);
+        executorPool.submit(serverConsole);
 
 
         ServerSocket ss=new ServerSocket(port); //这里写port Integer.parseInt(args[0])
@@ -60,11 +60,13 @@ public class MyServer {
 
                 //有了玩家实体，创建新的玩家通信子进程
                 PlayersInformationInput playerinput = new PlayersInformationInput(newplayersentity);
+
+                newplayersentity.setPlayersInformationInput(playerinput);//目的是为了日后得到这个信息输入类中的锁
                 //提交到进程池里进行执行
-                Future future = executorinformationPool.submit(playerinput);
+                Future future = executorPool.submit(playerinput);
 
 
-                newplayersentity.setPlayersinformationInput(future);
+                newplayersentity.setPlayersinformationInputFuture(future);
 
 
             }
