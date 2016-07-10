@@ -1,6 +1,7 @@
-package src.Utill;
+package src.Utill.Information;
 
 import src.Entity.OnlinePlayersEntity;
+import src.Utill.MyServer;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -16,24 +17,32 @@ public class PlayersInformationInput implements Runnable
     //需要socket
     //可能需要调用其他东西比如因此来个玩家
     public Socket playersocket;//为了方便单独把socket拿出来。
-    public OnlinePlayersEntity playersEntity;
+    public OnlinePlayersEntity playersEntity;//当前玩家的所有信息类
+    public Object SynObject=null; //游戏对战时候需要和游戏进程同步
 
 
+    //构造方法
     public PlayersInformationInput(OnlinePlayersEntity playersEntity){
 
         playersocket = playersEntity.socketToPlayer;
         this.playersEntity=playersEntity;
     }
 
+    public void setSynObject(Object synObject) {
+        SynObject = synObject;
+    }
 
     @Override
     public void run() {
       //获得输入流，然后不断地获取信息。。。。
 
+        //最好把下面的信息类别使用其他类来解析
+        //信息解析类,
 
         try {
 
-            InputStream is = playersocket.getInputStream();
+            InputStream is = playersocket.getInputStream();//  返回此套接字的输入流。因此是一个吧
+
             String[] words;
 
             while (true){
@@ -56,7 +65,7 @@ public class PlayersInformationInput implements Runnable
                         String exitname=words[2];//通过名字来退出的
 
                         //现在使用list去保存的，之后应该改用map吧
-                        for (Iterator iterator =MyServer.onlinePlayersEntitylist.iterator(); iterator.hasNext();)
+                        for (Iterator iterator = MyServer.onlinePlayersEntitylist.iterator(); iterator.hasNext();)
                         {
                             OnlinePlayersEntity playersEntity =  (OnlinePlayersEntity)iterator.next();
                             if ( playersEntity.playerotherinformation.playersName.equals(exitname))

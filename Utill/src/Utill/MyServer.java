@@ -3,6 +3,7 @@ package src.Utill;
 import src.Entity.NewPlayersEntity;
 import src.Entity.OnlinePlayersEntity;
 import src.Entity.PlayersEntity;
+import src.Utill.Information.PlayersInformationInput;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -28,8 +29,7 @@ public class MyServer {
         int port=5000;
 
         //创建线程池。用于玩家连入后（创建玩家在线实体和玩家通信进程）
-        ThreadPoolExecutor executorinformationPool = new ThreadPoolExecutor(5,10,200,TimeUnit.MILLISECONDS,new ArrayBlockingQueue<Runnable>(5));
-
+        ThreadPoolExecutor executorinformationPool = new ThreadPoolExecutor(10,20,200,TimeUnit.MILLISECONDS,new ArrayBlockingQueue<Runnable>(5));
 
 
         //向客户端发送信息则不用多线程
@@ -51,7 +51,8 @@ public class MyServer {
 
 
             if(linkresult.newStatus==Status.LinkStatus.LinkisOk) {
-                //生成新的玩家实体
+
+                //生成新的玩家在线实体
                 OnlinePlayersEntity newplayersentity = new OnlinePlayersEntity(Status.PlayersStatus.isOnline,linkresult.playersEntity, socket);
                 onlinePlayersEntitylist.add(newplayersentity);
 
