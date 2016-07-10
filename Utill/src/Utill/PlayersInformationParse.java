@@ -1,3 +1,5 @@
+package src.Utill;
+
 /**
  * Created by Administrator on 2016/7/8.
  */
@@ -5,7 +7,6 @@
 
 public class PlayersInformationParse //解析返回返回类型和数据格式化？
 {
-
 
 
     public static class GameInformationParse{

@@ -1,3 +1,7 @@
+package src.Utill;
+
+import src.Entity.OnlinePlayersEntity;
+
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.Socket;
@@ -11,8 +15,8 @@ public class PlayersInformationInput implements Runnable
 {
     //需要socket
     //可能需要调用其他东西比如因此来个玩家
-    Socket playersocket;//为了方便单独把socket拿出来。
-    OnlinePlayersEntity playersEntity;
+    public Socket playersocket;//为了方便单独把socket拿出来。
+    public OnlinePlayersEntity playersEntity;
 
 
     public PlayersInformationInput(OnlinePlayersEntity playersEntity){
@@ -37,7 +41,7 @@ public class PlayersInformationInput implements Runnable
                 byte[] buffer=new byte[200];
 
                 int length= is.read(buffer);
-                String word=new String(buffer,0,length);
+                String word=new String(buffer,0,length);// 这里直接将字节转为String解析是不合理的,应该用protobuff
 
 
                 System.out.println(word);//这里能不能正确输出到控制台

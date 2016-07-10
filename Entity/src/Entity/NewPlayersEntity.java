@@ -1,10 +1,12 @@
+package src.Entity;
+
 /**
  * Created by Administrator on 2016/7/8.
  */
 public class NewPlayersEntity
 {
-    int newStatus;
-    PlayersEntity playersEntity=null;
+    public int newStatus;
+    public PlayersEntity playersEntity=null;
 
     public NewPlayersEntity(int newStatus) {
         this.newStatus = newStatus;

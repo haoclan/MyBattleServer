@@ -22,11 +22,14 @@
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
         <processorPath useClasspath="true" />
-        <module name="Mvn" />
+        <module name="MyClient" />
+        <module name="Utill" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
       <module name="Mvn" target="1.5" />
+      <module name="MyClient" target="1.5" />
+      <module name="Utill" target="1.5" />
     </bytecodeTargetLevel>
   </component>
 </project>

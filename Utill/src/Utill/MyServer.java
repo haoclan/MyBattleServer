@@ -1,3 +1,9 @@
+package src.Utill;
+
+import src.Entity.NewPlayersEntity;
+import src.Entity.OnlinePlayersEntity;
+import src.Entity.PlayersEntity;
+
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -67,10 +73,9 @@ public class MyServer {
         }
 
 
-
-
     }
 
+    //收到一个socket的连接后,进行验证,然后返回一个new
     public static NewPlayersEntity linketoServer(Socket socket) throws IOException {
         //先收到一个连接，然后进行解析
         InputStream login= null;

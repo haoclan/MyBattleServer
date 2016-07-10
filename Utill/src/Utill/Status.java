@@ -1,3 +1,5 @@
+package src.Utill;
+
 /**
  * Created by Administrator on 2016/7/8.
  */
@@ -37,6 +39,7 @@ public class Status {
     //游戏中玩家的状态
     public static class PlayerInGameStatus{
        // public static final int  ;
+
     }
 
 }

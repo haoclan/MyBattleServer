@@ -1,3 +1,7 @@
+package src.Utill;
+
+import src.Entity.OnlinePlayersEntity;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -8,6 +12,7 @@ import java.util.Iterator;
 /**
  * Created by Administrator on 2016/7/8.
  */
+
 public class ServerConsole implements Runnable
 {
 
